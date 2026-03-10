@@ -31,4 +31,3 @@ class JudgeConfig(BaseModel):
     provider: ProviderName
     temperature: float = Field(ge=0.0, le=1.0)
     display_name: str = "Судья"
-

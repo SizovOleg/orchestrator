@@ -51,16 +51,42 @@ class SessionOrchestrator:
                 search_context=search_context,
             )
             verdict = await self.judge.evaluate_round(session_config, round_data)
+
+            if not session_config.ask_clarifying_questions:
+                verdict.needs_user_input = False
+                verdict.clarification_requests = []
+                if verdict.stop_reason == "needs_user_input":
+                    verdict.stop_reason = None
+                    verdict.should_stop = False
+
+            verdict.clarification_requests = self._filter_clarification_requests(
+                verdict.clarification_requests,
+                session_config,
+            )
+            if not verdict.clarification_requests:
+                verdict.needs_user_input = False
+                if verdict.stop_reason == "needs_user_input":
+                    verdict.stop_reason = None
+                    verdict.should_stop = False
+
             round_data.judge_verdict = verdict
             session.rounds.append(round_data)
 
-            aggregated_questions = self._aggregate_questions(round_data.responses)
-            if round_number == 1 and session_config.ask_clarifying_questions and aggregated_questions and not session_config.context:
+            aggregated_questions = self._filter_clarification_requests(
+                self._aggregate_questions(round_data.responses),
+                session_config,
+            )
+            if (
+                round_number == 1
+                and session_config.ask_clarifying_questions
+                and aggregated_questions
+                and not session_config.context
+            ):
                 session.status = "needs_user_input"
                 session.clarification_requests = aggregated_questions
                 break
 
-            if verdict.needs_user_input and verdict.clarification_requests:
+            if session_config.ask_clarifying_questions and verdict.needs_user_input and verdict.clarification_requests:
                 session.status = "needs_user_input"
                 session.clarification_requests = verdict.clarification_requests
                 break
@@ -172,8 +198,35 @@ class SessionOrchestrator:
         ordered: list[str] = []
         for response in responses:
             for question in response.parsed.clarification_requests:
-                question = question.strip()
-                if question and question not in seen:
-                    seen.add(question)
-                    ordered.append(question)
+                normalized = question.strip()
+                if normalized and normalized not in seen:
+                    seen.add(normalized)
+                    ordered.append(normalized)
         return ordered
+
+    def _filter_clarification_requests(
+        self,
+        questions: list[str],
+        session_config: SessionConfig,
+    ) -> list[str]:
+        if not questions:
+            return []
+
+        trivial_patterns = (
+            "кодиров",
+            "utf-8",
+            "язык",
+            "жанр",
+            "темати",
+            "какие конкретно технические характеристики",
+        )
+        filtered: list[str] = []
+        for question in questions:
+            normalized = question.strip()
+            lowered = normalized.lower()
+            if session_config.source_text and any(pattern in lowered for pattern in trivial_patterns):
+                continue
+            if session_config.web_search and "официальные источники" in lowered:
+                continue
+            filtered.append(normalized)
+        return filtered

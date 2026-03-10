@@ -41,7 +41,7 @@ class LLMGateway:
                 response = await acompletion(
                     model=provider.model,
                     messages=messages,
-                    temperature=agent.temperature,
+                    temperature=self._resolve_temperature(provider.model, agent.temperature),
                     api_key=provider.api_key,
                     max_tokens=4096,
                     stream=False,
@@ -70,7 +70,7 @@ class LLMGateway:
         response = await acompletion(
             model=provider.model,
             messages=messages,
-            temperature=self.config.judge.temperature,
+            temperature=self._resolve_temperature(provider.model, self.config.judge.temperature),
             api_key=provider.api_key,
             max_tokens=4096,
             stream=False,
@@ -92,3 +92,8 @@ class LLMGateway:
             for provider_name, provider in self.config.providers.items()
         }
 
+    def _resolve_temperature(self, model: str, requested: float) -> float:
+        normalized_model = model.removeprefix("openai/")
+        if normalized_model.startswith("gpt-5"):
+            return 1.0
+        return requested

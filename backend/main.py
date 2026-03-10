@@ -11,9 +11,10 @@ from backend.core.orchestrator import SessionOrchestrator
 from backend.core.prompt_builder import PromptBuilder
 from backend.core.response_parser import ResponseParser
 from backend.core.web_search import WebSearch
+from backend.storage.session_store import FileSessionStore
 
 
-def create_app(settings: AppSettings | None = None, gateway=None) -> FastAPI:
+def create_app(settings: AppSettings | None = None, gateway=None, session_store=None) -> FastAPI:
     settings = settings or load_config()
     prompt_builder = PromptBuilder("backend/prompts")
     response_parser = ResponseParser()
@@ -28,10 +29,12 @@ def create_app(settings: AppSettings | None = None, gateway=None) -> FastAPI:
         web_search=web_search,
         config=settings,
     )
+    history_store = session_store or FileSessionStore()
 
     app = FastAPI(title="SciProof", version="0.1.0")
     app.state.settings = settings
     app.state.orchestrator = orchestrator
+    app.state.session_store = history_store
 
     app.add_middleware(
         CORSMiddleware,
@@ -50,10 +53,10 @@ def create_app(settings: AppSettings | None = None, gateway=None) -> FastAPI:
         return {
             "status": "ok",
             "providers": await llm_gateway.health_check(),
+            "storage": history_store.backend_name,
         }
 
     return app
 
 
 app = create_app()
-

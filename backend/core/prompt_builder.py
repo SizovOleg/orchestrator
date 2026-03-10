@@ -61,7 +61,7 @@ class PromptBuilder:
 
         user = self._render(
             "round_n.jinja2",
-            question=config.question or "Проведи review текста и улучши его.",
+            question=config.question or "Проведи review текста и предложи улучшения.",
             source_text=config.source_text,
             context=config.context,
             search_context=search_context,
@@ -126,11 +126,11 @@ class PromptBuilder:
             f"Разрешена глубокая перестройка: {'да' if config.allow_restructure else 'нет'}",
         ]
         if config.source_text:
-            parts.append(f"Исходный текст:\n{config.source_text}")
+            parts.append(f"Исходный текст:\n{self._prepare_text(config.source_text)}")
         if config.context:
-            parts.append(f"Дополнительный контекст:\n{config.context}")
+            parts.append(f"Дополнительный контекст:\n{self._prepare_text(config.context)}")
         if search_context:
-            parts.append(f"Результаты web search:\n{search_context}")
+            parts.append(f"Результаты web search:\n{self._prepare_text(search_context)}")
         return "\n\n".join(parts)
 
     def _history_to_text(self, history: list[RoundData], include_judge: bool = False) -> str:
@@ -158,3 +158,10 @@ class PromptBuilder:
         template = self.env.get_template(template_name)
         return template.render(**context).strip()
 
+    def _prepare_text(self, value: str) -> str:
+        return (
+            value.replace("\r\n", "\n")
+            .replace("\r", "\n")
+            .replace("\t", " | ")
+            .replace("\u00a0", " ")
+        )

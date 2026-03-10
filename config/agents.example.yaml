@@ -1,7 +1,7 @@
 providers:
   anthropic:
     api_key: "${ANTHROPIC_API_KEY}"
-    model: "anthropic/claude-sonnet-4-20250514"
+    model: "anthropic/claude-sonnet-4-6"
   openai:
     api_key: "${OPENAI_API_KEY}"
     model: "openai/gpt-5.4"
@@ -32,4 +32,3 @@ judge:
   provider: anthropic
   temperature: 0.2
   display_name: "Судья"
-

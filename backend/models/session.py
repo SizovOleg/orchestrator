@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
@@ -103,6 +104,7 @@ class SessionConfig(BaseModel):
 
 class SessionResult(BaseModel):
     session_id: str = Field(default_factory=lambda: str(uuid4()))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     status: SessionStatus = "completed"
     task_type: str
     question: str
@@ -113,3 +115,21 @@ class SessionResult(BaseModel):
     synthesis: JudgeSynthesis | None = None
     total_tokens: int = 0
     total_cost_usd: float = 0.0
+
+
+class SessionSummary(BaseModel):
+    session_id: str
+    created_at: datetime
+    task_type: str
+    status: SessionStatus
+    question: str
+    total_tokens: int = 0
+    total_cost_usd: float = 0.0
+    rounds_count: int = 0
+    has_synthesis: bool = False
+
+
+class StoredSessionRecord(BaseModel):
+    saved_at: datetime
+    config: SessionConfig
+    result: SessionResult

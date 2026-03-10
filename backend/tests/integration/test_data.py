@@ -106,4 +106,3 @@ class FakeGateway:
 
     async def health_check(self) -> dict[str, bool]:
         return {"anthropic": True, "openai": True}
-

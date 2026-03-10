@@ -9,3 +9,7 @@ node_modules/
 dist/
 coverage/
 remote_inspect/
+secrets.txt
+.env
+.env.*
+data/sessions/

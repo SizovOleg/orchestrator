@@ -55,7 +55,7 @@
 providers:
   anthropic:
     api_key: "${ANTHROPIC_API_KEY}"
-    model: "claude-sonnet-4-20250514"   # Фаза 0: Sonnet. Upgrade → Opus если нужно
+    model: "claude-sonnet-4-6"   # Фаза 0: Sonnet. Upgrade → Opus если нужно
   openai:
     api_key: "${OPENAI_API_KEY}"
     model: "gpt-5.4"
@@ -103,7 +103,7 @@ agents:
 
 judge:
   provider: anthropic
-  model: "claude-sonnet-4-20250514"     # Фаза 0: Sonnet. Upgrade → Opus если нужно
+  model: "claude-sonnet-4-6"     # Фаза 0: Sonnet. Upgrade → Opus если нужно
   temperature: 0.2                       # Низкая: судья должен быть стабилен
   display_name: "Судья"
 ```
@@ -298,7 +298,7 @@ async def call(
 ```yaml
 providers:
   anthropic:
-    litellm_model_id: "anthropic/claude-sonnet-4-20250514"
+    litellm_model_id: "anthropic/claude-sonnet-4-6"
     cost_input_per_1m: 3.0
     cost_output_per_1m: 15.0
     max_context: 200000

@@ -83,7 +83,7 @@
    providers:
      anthropic:
        api_key: "sk-ant-xxx"
-       model: "anthropic/claude-sonnet-4-20250514"
+       model: "anthropic/claude-sonnet-4-6"
      openai:
        api_key: "sk-xxx"
        model: "openai/gpt-5.4"

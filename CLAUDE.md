@@ -28,7 +28,7 @@ Frontend (React+Vite) → Backend (FastAPI) → LLM Gateway (LiteLLM) → Anthro
 ### Провайдеры
 
 Только два провайдера, прямые API-ключи через LiteLLM:
-- **Anthropic:** `anthropic/claude-sonnet-4-20250514` (участники + судья)
+- **Anthropic:** `anthropic/claude-sonnet-4-6` (участники + судья)
 - **OpenAI:** `openai/gpt-5.4` (участники)
 
 ### 4 агента по умолчанию

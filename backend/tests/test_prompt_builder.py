@@ -88,4 +88,3 @@ def test_judge_synthesis_contains_history() -> None:
     messages = builder.judge_synthesis(config, session)
     assert "История раундов" in messages[1]["content"]
     assert "Нужно упростить текст." in messages[1]["content"]
-
