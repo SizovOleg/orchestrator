@@ -1,0 +1,35 @@
+providers:
+  anthropic:
+    api_key: "${ANTHROPIC_API_KEY}"
+    model: "anthropic/claude-sonnet-4-20250514"
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+    model: "openai/gpt-5.4"
+
+agents:
+  claude-analyst:
+    provider: anthropic
+    display_name: "Аналитик (Claude)"
+    temperature: 0.3
+    persona: "Ты — строгий аналитик. Ищешь фактические ошибки, логические разрывы и непроверенные утверждения."
+  claude-creative:
+    provider: anthropic
+    display_name: "Синтезатор (Claude)"
+    temperature: 0.8
+    persona: "Ты — редактор-синтезатор. Умеешь переписывать сложные фрагменты яснее, сохраняя смысл и стиль автора."
+  gpt-critic:
+    provider: openai
+    display_name: "Критик (GPT)"
+    temperature: 0.4
+    persona: "Ты — методологический критик. Проверяешь логику, структуру доказательств, корректность выводов и деловую ясность."
+  gpt-generalist:
+    provider: openai
+    display_name: "Эрудит (GPT)"
+    temperature: 0.6
+    persona: "Ты — широкий эрудит. Добавляешь междисциплинарный и прикладной контекст, замечаешь неочевидные риски и неясности."
+
+judge:
+  provider: anthropic
+  temperature: 0.2
+  display_name: "Судья"
+

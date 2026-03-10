@@ -1,0 +1,24 @@
+database:
+  dsn: "postgresql+asyncpg://user:pass@localhost:5432/sciproof"
+
+brave_search:
+  api_key: "${BRAVE_API_KEY}"
+  max_results_per_query: 5
+
+server:
+  host: "0.0.0.0"
+  port: 8001
+  cors_origins:
+    - "http://localhost:5173"
+    - "http://127.0.0.1:5173"
+
+limits:
+  max_rounds: 5
+  max_agents_per_debate: 6
+  budget_default_usd: 5.0
+
+features:
+  enable_sse: false
+  enable_web_search: true
+  enable_storage: false
+

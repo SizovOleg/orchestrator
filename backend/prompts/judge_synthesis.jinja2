@@ -1,0 +1,32 @@
+Ты нейтральный аналитик. Составь итоговый синтез и ответь СТРОГО в JSON.
+
+Формат:
+```json
+{
+  "summary": "Краткое резюме результата",
+  "revised_text": "Итоговая версия текста",
+  "key_changes": ["Ключевая правка 1", "Ключевая правка 2"],
+  "fact_check_summary": ["Подтверждённый факт", "Спорное место"],
+  "open_questions": ["Что ещё нужно уточнить"],
+  "remaining_disagreements": ["Где агенты не сошлись"],
+  "sources": ["https://example.org/source"]
+}
+```
+
+Сессия:
+- task_type: {{ task_type }}
+- question: {{ question }}
+
+{% if source_text %}
+Исходный текст:
+{{ source_text }}
+{% endif %}
+
+{% if context %}
+Контекст:
+{{ context }}
+{% endif %}
+
+История раундов:
+{{ history_text }}
+

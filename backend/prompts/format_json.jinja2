@@ -1,0 +1,52 @@
+Ответь СТРОГО в формате JSON. Никакого текста до или после JSON.
+Пиши на русском языке.
+
+Используй РОВНО эти ключи:
+
+```json
+{
+  "position": "Краткая позиция агента",
+  "confidence": "high",
+  "position_changed": false,
+  "change_reason": "",
+  "agreements": [
+    {
+      "with": "Response A",
+      "point": "Точка согласия",
+      "why": "Почему это убедительно"
+    }
+  ],
+  "disagreements": [
+    {
+      "with": "Response B",
+      "point": "Точка несогласия",
+      "counterargument": "Контраргумент"
+    }
+  ],
+  "issues": [
+    {
+      "segment": "Фрагмент текста",
+      "problem": "Что не так",
+      "severity": "medium",
+      "suggestion": "Как исправить"
+    }
+  ],
+  "clarification_requests": [
+    "Какой период имеется в виду?",
+    "Нужно ли сохранять научный стиль без упрощения терминов?"
+  ],
+  "sources": [
+    "https://example.org/source"
+  ],
+  "revised_text": "Полная исправленная версия текста или пустая строка, если контекста не хватает.",
+  "full_argument": "Свободное объяснение в Markdown."
+}
+```
+
+Правила:
+- `confidence` только `high`, `medium` или `low`.
+- `severity` только `high`, `medium` или `low`.
+- В раунде 1 `agreements` и `disagreements` должны быть пустыми массивами.
+- Если контекста не хватает, честно заполни `clarification_requests` и не выдумывай данные.
+- Если текста достаточно, в `revised_text` дай полную улучшенную версию.
+

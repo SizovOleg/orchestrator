@@ -1,0 +1,11 @@
+config/agents.yaml
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+*.pyo
+*.pyd
+node_modules/
+dist/
+coverage/
+remote_inspect/

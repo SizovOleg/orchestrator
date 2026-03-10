@@ -1,0 +1,38 @@
+Ниже находятся анонимизированные ответы других участников. Пересмотри свою позицию с учётом их аргументов.
+
+Задача:
+{{ question }}
+
+{% if source_text %}
+Исходный текст:
+{{ source_text }}
+{% endif %}
+
+{% if context %}
+Контекст пользователя:
+{{ context }}
+{% endif %}
+
+{% if search_context %}
+Результаты web search:
+{{ search_context }}
+{% endif %}
+
+Ответы оппонентов:
+{% for response in anonymized_responses %}
+{{ response.label }}:
+{{ response.content }}
+
+{% endfor %}
+
+Требования:
+- Для КАЖДОГО оппонента найди хотя бы одно слабое место, даже если в целом согласен.
+- Если изменил позицию, объясни это в `change_reason`.
+- Если по-прежнему не хватает данных, сохрани или уточни `clarification_requests`.
+- Если контекста уже достаточно, выдай полный `revised_text`.
+
+{% if history_text %}
+Полная история предыдущих раундов:
+{{ history_text }}
+{% endif %}
+
